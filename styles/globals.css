@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 0 0% 3.6%;
+  --border: 0 0% 89.8%;
+  --input: 0 0% 89.8%;
+  --ring: 0 0% 3.6%;
+  --primary: 0 0% 9%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 0 0% 96.1%;
+  --secondary-foreground: 0 0% 9%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --muted: 0 0% 96.1%;
+  --muted-foreground: 0 0% 45.1%;
+  --accent: 0 0% 9%;
+  --accent-foreground: 0 0% 98%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 3.6%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 3.6%;
+  --radius: 0.5rem;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-mono: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+}
+
+.dark {
+  --background: 0 0% 3.6%;
+  --foreground: 0 0% 98%;
+  --border: 0 0% 14.9%;
+  --input: 0 0% 14.9%;
+  --ring: 0 0% 83.1%;
+  --primary: 0 0% 98%;
+  --primary-foreground: 0 0% 9%;
+  --secondary: 0 0% 14.9%;
+  --secondary-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --muted: 0 0% 14.9%;
+  --muted-foreground: 0 0% 63.9%;
+  --accent: 0 0% 98%;
+  --accent-foreground: 0 0% 9%;
+  --popover: 0 0% 3.6%;
+  --popover-foreground: 0 0% 98%;
+  --card: 0 0% 3.6%;
+  --card-foreground: 0 0% 98%;
+}
+
+* {
+  @apply border-border;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-background text-foreground;
+}
+
+/* Code Editor Styles */
+.editor-container {
+  @apply h-full w-full;
+}
+
+.monaco-editor {
+  @apply font-mono;
+}
+
+.cm-editor {
+  @apply font-mono;
+}
+
+.ace_editor {
+  @apply font-mono;
+}
+
+/* Terminal Styles */
+.terminal {
+  @apply bg-slate-950 font-mono text-green-400;
+}
+
+.terminal-line {
+  @apply py-1;
+}
+
+/* File Explorer */
+.file-tree {
+  @apply space-y-1;
+}
+
+.file-item {
+  @apply rounded px-2 py-1 text-sm transition-colors hover:bg-slate-700;
+}
+
+.file-item.active {
+  @apply bg-blue-600 text-white;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  @apply h-2 w-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-slate-900;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply rounded bg-slate-700 hover:bg-slate-600;
+}
+
+/* Selection */
+::selection {
+  @apply bg-blue-600 text-white;
+}

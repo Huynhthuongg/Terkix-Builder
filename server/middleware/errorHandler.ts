@@ -1,0 +1,37 @@
+import { Request, Response, NextFunction } from 'express';
+
+export interface AppError extends Error {
+  status?: number;
+  code?: string;
+}
+
+export const errorHandler = (
+  err: AppError,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const status = err.status || 500;
+  const message = err.message || 'Internal Server Error';
+
+  console.error(`[${new Date().toISOString()}] Error:`, {
+    status,
+    message,
+    path: req.path,
+    method: req.method,
+    stack: err.stack,
+  });
+
+  res.status(status).json({
+    success: false,
+    error: message,
+    code: err.code,
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
+  });
+};
+
+export const asyncHandler = (fn: Function) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    Promise.resolve(fn(req, res, next)).catch(next);
+  };
+};

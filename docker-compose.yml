@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://localhost:3001
+      - DATABASE_URL=postgresql://user:password@db:5432/terkix_builder
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - .:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - db
+    networks:
+      - terkix-network
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=terkix_builder
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - terkix-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - terkix-network
+
+volumes:
+  postgres_data:
+
+networks:
+  terkix-network:
+    driver: bridge
