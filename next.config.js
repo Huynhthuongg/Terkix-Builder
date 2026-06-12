@@ -66,9 +66,8 @@ const nextConfig = {
 
   // Experimental features
   experimental: {
-    appDir: true,
     serverComponentsExternalPackages: ['express', 'socket.io'],
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;

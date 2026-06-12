@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 // Mock database
 const projects: any[] = [];
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     // Get all projects
     return NextResponse.json({

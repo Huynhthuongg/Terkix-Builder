@@ -1,24 +1,24 @@
 'use client';
 
-import { useState } from 'react';
+import { useState } from 'react'; // eslint-disable-line @typescript-eslint/no-unused-vars
 import Link from 'next/link';
 import { Plus, Code, Play, Settings } from 'lucide-react';
 
 export default function DashboardPage() {
-  const [projects, setProjects] = useState([
+  const [projects] = useState([
     {
       id: '1',
       name: 'My First Project',
       description: 'A simple JavaScript project',
       language: 'javascript',
-      createdAt: new Date(),
+      createdAt: new Date('2024-01-15'),
     },
     {
       id: '2',
       name: 'Python Script',
       description: 'Python automation script',
       language: 'python',
-      createdAt: new Date(),
+      createdAt: new Date('2024-01-20'),
     },
   ]);
 
