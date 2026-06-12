@@ -1,7 +1,4 @@
-import Docker from 'dockerode';
-import path from 'path';
-import fs from 'fs';
-import os from 'os';
+import { spawn } from "child_process";
 
 interface ExecutionResult {
   success: boolean;
@@ -11,141 +8,101 @@ interface ExecutionResult {
   containerId?: string;
 }
 
-export class DockerExecutor {
-  private docker: Docker;
-  private timeout = 10000; // 10 seconds
+interface DockerRunOptions {
+  image: string;
+  command: string[];
+}
 
-  constructor() {
-    this.docker = new Docker({
-      socketPath: process.env.DOCKER_SOCKET || '/var/run/docker.sock',
+export class DockerExecutor {
+  private timeout = 10000;
+
+  async executeJavaScript(code: string): Promise<ExecutionResult> {
+    return this.runContainer({
+      image: "node:18-alpine",
+      command: ["node", "-e", code],
     });
   }
 
-  async executeJavaScript(code: string): Promise<ExecutionResult> {
-    const startTime = Date.now();
-
-    try {
-      // Create container
-      const container = await this.docker.createContainer({
-        Image: 'node:18-alpine',
-        Cmd: ['node', '-e', code],
-        HostConfig: {
-          Memory: 128 * 1024 * 1024, // 128MB
-          MemorySwap: 128 * 1024 * 1024,
-          CpuQuota: 50000, // 50% CPU
-        },
-        Tty: false,
-        AttachStdout: true,
-        AttachStderr: true,
-      });
-
-      // Start container
-      await container.start();
-
-      // Wait for container to finish
-      const result = await container.wait();
-
-      // Get logs
-      const logs = await container.logs({
-        stdout: true,
-        stderr: true,
-      });
-
-      // Remove container
-      await container.remove();
-
-      const output = logs.toString();
-      const success = result.StatusCode === 0;
-
-      return {
-        success,
-        output,
-        error: success ? null : `Process exited with code ${result.StatusCode}`,
-        duration: Date.now() - startTime,
-        containerId: container.id,
-      };
-    } catch (error: any) {
-      return {
-        success: false,
-        output: '',
-        error: error.message,
-        duration: Date.now() - startTime,
-      };
-    }
-  }
-
   async executePython(code: string): Promise<ExecutionResult> {
-    const startTime = Date.now();
-
-    try {
-      // Create container
-      const container = await this.docker.createContainer({
-        Image: 'python:3.11-alpine',
-        Cmd: ['python', '-c', code],
-        HostConfig: {
-          Memory: 128 * 1024 * 1024, // 128MB
-          MemorySwap: 128 * 1024 * 1024,
-          CpuQuota: 50000, // 50% CPU
-        },
-        Tty: false,
-        AttachStdout: true,
-        AttachStderr: true,
-      });
-
-      // Start container
-      await container.start();
-
-      // Wait for container to finish
-      const result = await container.wait();
-
-      // Get logs
-      const logs = await container.logs({
-        stdout: true,
-        stderr: true,
-      });
-
-      // Remove container
-      await container.remove();
-
-      const output = logs.toString();
-      const success = result.StatusCode === 0;
-
-      return {
-        success,
-        output,
-        error: success ? null : `Process exited with code ${result.StatusCode}`,
-        duration: Date.now() - startTime,
-        containerId: container.id,
-      };
-    } catch (error: any) {
-      return {
-        success: false,
-        output: '',
-        error: error.message,
-        duration: Date.now() - startTime,
-      };
-    }
+    return this.runContainer({
+      image: "python:3.11-alpine",
+      command: ["python", "-c", code],
+    });
   }
 
   async cleanup(): Promise<void> {
-    try {
-      const containers = await this.docker.listContainers({
-        all: true,
-        filters: { label: ['terkix=true'] },
+    await this.runDockerCommand([
+      "container",
+      "prune",
+      "--force",
+      "--filter",
+      "label=terkix=true",
+    ]);
+  }
+
+  private async runContainer({
+    image,
+    command,
+  }: DockerRunOptions): Promise<ExecutionResult> {
+    const startTime = Date.now();
+    const args = [
+      "run",
+      "--rm",
+      "--label",
+      "terkix=true",
+      "--memory",
+      "128m",
+      "--cpus",
+      "0.5",
+      image,
+      ...command,
+    ];
+
+    const result = await this.runDockerCommand(args);
+
+    return {
+      success: result.code === 0,
+      output: result.stdout,
+      error:
+        result.code === 0
+          ? null
+          : result.stderr || `Process exited with code ${result.code}`,
+      duration: Date.now() - startTime,
+    };
+  }
+
+  private runDockerCommand(
+    args: string[],
+  ): Promise<{ code: number | null; stdout: string; stderr: string }> {
+    return new Promise((resolve) => {
+      const child = spawn("docker", args, {
+        stdio: ["ignore", "pipe", "pipe"],
+      });
+      let stdout = "";
+      let stderr = "";
+
+      const timeoutId = setTimeout(() => {
+        child.kill("SIGKILL");
+      }, this.timeout);
+
+      child.stdout.on("data", (data) => {
+        stdout += data.toString();
       });
 
-      for (const containerInfo of containers) {
-        const container = this.docker.getContainer(containerInfo.Id);
-        try {
-          await container.stop();
-          await container.remove();
-        } catch (e) {
-          // Ignore errors
-        }
-      }
-    } catch (error) {
-      // Ignore errors
-    }
+      child.stderr.on("data", (data) => {
+        stderr += data.toString();
+      });
+
+      child.on("error", (error) => {
+        clearTimeout(timeoutId);
+        resolve({ code: 1, stdout, stderr: error.message });
+      });
+
+      child.on("close", (code) => {
+        clearTimeout(timeoutId);
+        resolve({ code, stdout, stderr });
+      });
+    });
   }
 }
 

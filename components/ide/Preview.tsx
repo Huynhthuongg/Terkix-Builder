@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { RefreshCw, ExternalLink } from 'lucide-react';
+import { useState } from "react";
+import { RefreshCw, ExternalLink } from "lucide-react";
 
 interface PreviewProps {
   projectId: string;
@@ -9,7 +9,11 @@ interface PreviewProps {
   isLoading?: boolean;
 }
 
-export default function Preview({ projectId, url, isLoading = false }: PreviewProps) {
+export default function Preview({
+  projectId,
+  url,
+  isLoading = false,
+}: PreviewProps) {
   const [refreshKey, setRefreshKey] = useState(0);
 
   const handleRefresh = () => {
@@ -20,7 +24,9 @@ export default function Preview({ projectId, url, isLoading = false }: PreviewPr
     <div className="flex flex-1 flex-col bg-white">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-slate-300 bg-slate-50 px-4 py-2">
-        <span className="text-sm font-medium text-slate-700">Preview</span>
+        <span className="text-sm font-medium text-slate-700">
+          Preview · {projectId}
+        </span>
         <div className="flex items-center gap-2">
           <button
             onClick={handleRefresh}
@@ -29,7 +35,7 @@ export default function Preview({ projectId, url, isLoading = false }: PreviewPr
           >
             <RefreshCw
               size={16}
-              className={`text-slate-600 ${isLoading ? 'animate-spin' : ''}`}
+              className={`text-slate-600 ${isLoading ? "animate-spin" : ""}`}
             />
           </button>
           {url && (

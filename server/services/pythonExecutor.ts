@@ -1,7 +1,7 @@
-import { spawn } from 'child_process';
-import path from 'path';
-import fs from 'fs';
-import os from 'os';
+import { spawn } from "child_process";
+import path from "path";
+import fs from "fs";
+import os from "os";
 
 interface ExecutionResult {
   success: boolean;
@@ -12,7 +12,7 @@ interface ExecutionResult {
 
 export class PythonExecutor {
   private timeout = 5000; // 5 seconds
-  private pythonPath = 'python3';
+  private pythonPath = "python3";
 
   async execute(code: string): Promise<ExecutionResult> {
     const startTime = Date.now();
@@ -26,23 +26,40 @@ export class PythonExecutor {
         // Write code to temporary file
         fs.writeFileSync(tempFile, code);
 
-        let output = '';
-        let error = '';
+        let output = "";
+        let error = "";
 
         const process = spawn(this.pythonPath, [tempFile], {
           timeout: this.timeout,
-          stdio: ['pipe', 'pipe', 'pipe'],
+          stdio: ["pipe", "pipe", "pipe"],
         });
 
-        process.stdout?.on('data', (data) => {
+        process.stdout?.on("data", (data) => {
           output += data.toString();
         });
 
-        process.stderr?.on('data', (data) => {
+        process.stderr?.on("data", (data) => {
           error += data.toString();
         });
 
-        process.on('close', (code) => {
+        const timeoutId = setTimeout(() => {
+          process.kill();
+          try {
+            fs.unlinkSync(tempFile);
+          } catch (e) {
+            // Ignore cleanup errors
+          }
+
+          resolve({
+            success: false,
+            output,
+            error: "Execution timeout (5 seconds)",
+            duration: Date.now() - startTime,
+          });
+        }, this.timeout);
+
+        process.on("close", (code) => {
+          clearTimeout(timeoutId);
           // Clean up temporary file
           try {
             fs.unlinkSync(tempFile);
@@ -53,12 +70,14 @@ export class PythonExecutor {
           resolve({
             success: code === 0 && !error,
             output,
-            error: error || (code !== 0 ? `Process exited with code ${code}` : null),
+            error:
+              error || (code !== 0 ? `Process exited with code ${code}` : null),
             duration: Date.now() - startTime,
           });
         });
 
-        process.on('error', (err) => {
+        process.on("error", (err) => {
+          clearTimeout(timeoutId);
           // Clean up temporary file
           try {
             fs.unlinkSync(tempFile);
@@ -73,23 +92,6 @@ export class PythonExecutor {
             duration: Date.now() - startTime,
           });
         });
-
-        // Set timeout
-        const timeoutId = setTimeout(() => {
-          process.kill();
-          try {
-            fs.unlinkSync(tempFile);
-          } catch (e) {
-            // Ignore cleanup errors
-          }
-
-          resolve({
-            success: false,
-            output,
-            error: 'Execution timeout (5 seconds)',
-            duration: Date.now() - startTime,
-          });
-        }, this.timeout);
       } catch (err: any) {
         // Clean up temporary file
         try {
@@ -100,7 +102,7 @@ export class PythonExecutor {
 
         resolve({
           success: false,
-          output: '',
+          output: "",
           error: err.message,
           duration: Date.now() - startTime,
         });

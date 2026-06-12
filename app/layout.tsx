@@ -1,13 +1,11 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import { Analytics } from '@vercel/analytics/next';
-import '../styles/globals.css';
-
-const inter = Inter({ subsets: ['latin'] });
+import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
+import "../styles/globals.css";
 
 export const metadata: Metadata = {
-  title: 'Terkix Builder - IDE Web Platform',
-  description: 'A comprehensive IDE web platform for building, coding, and deploying applications',
+  title: "Terkix Builder - IDE Web Platform",
+  description:
+    "A comprehensive IDE web platform for building, coding, and deploying applications",
 };
 
 export default function RootLayout({
@@ -17,7 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body>
         {children}
         <Analytics />
       </body>

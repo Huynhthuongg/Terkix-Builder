@@ -1,6 +1,3 @@
-import { Worker } from 'worker_threads';
-import path from 'path';
-
 interface ExecutionResult {
   success: boolean;
   output: string;
@@ -18,8 +15,8 @@ export class JavaScriptExecutor {
       const timeoutId = setTimeout(() => {
         resolve({
           success: false,
-          output: '',
-          error: 'Execution timeout (5 seconds)',
+          output: "",
+          error: "Execution timeout (5 seconds)",
           duration: Date.now() - startTime,
         });
       }, this.timeout);
@@ -32,21 +29,25 @@ export class JavaScriptExecutor {
         // Mock console object
         const mockConsole = {
           log: (...args: any[]) => {
-            output.push(args.map((arg) => JSON.stringify(arg)).join(' '));
+            output.push(args.map((arg) => JSON.stringify(arg)).join(" "));
           },
           error: (...args: any[]) => {
-            errors.push(args.map((arg) => JSON.stringify(arg)).join(' '));
+            errors.push(args.map((arg) => JSON.stringify(arg)).join(" "));
           },
           warn: (...args: any[]) => {
-            output.push('[WARN] ' + args.map((arg) => JSON.stringify(arg)).join(' '));
+            output.push(
+              "[WARN] " + args.map((arg) => JSON.stringify(arg)).join(" "),
+            );
           },
           info: (...args: any[]) => {
-            output.push('[INFO] ' + args.map((arg) => JSON.stringify(arg)).join(' '));
+            output.push(
+              "[INFO] " + args.map((arg) => JSON.stringify(arg)).join(" "),
+            );
           },
         };
 
         // Create execution function
-        const executeCode = new Function('console', code);
+        const executeCode = new Function("console", code);
 
         // Execute code
         executeCode(mockConsole);
@@ -55,8 +56,8 @@ export class JavaScriptExecutor {
 
         resolve({
           success: errors.length === 0,
-          output: output.join('\n'),
-          error: errors.length > 0 ? errors.join('\n') : null,
+          output: output.join("\n"),
+          error: errors.length > 0 ? errors.join("\n") : null,
           duration: Date.now() - startTime,
         });
       } catch (error: any) {
@@ -64,7 +65,7 @@ export class JavaScriptExecutor {
 
         resolve({
           success: false,
-          output: '',
+          output: "",
           error: error.message,
           duration: Date.now() - startTime,
         });
@@ -88,7 +89,7 @@ export class JavaScriptExecutor {
       if (pattern.test(code)) {
         return {
           success: false,
-          output: '',
+          output: "",
           error: `Dangerous pattern detected: ${pattern.source}`,
           duration: 0,
         };

@@ -1,12 +1,19 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { ChevronRight, ChevronDown, File, Folder, Plus, Trash2 } from 'lucide-react';
+import { useState } from "react";
+import {
+  ChevronRight,
+  ChevronDown,
+  File,
+  Folder,
+  Plus,
+  Trash2,
+} from "lucide-react";
 
 interface FileItem {
   id: string;
   name: string;
-  type: 'file' | 'folder';
+  type: "file" | "folder";
   children?: FileItem[];
   isOpen?: boolean;
 }
@@ -23,24 +30,24 @@ export default function FileExplorer({
   projectId,
   files = [
     {
-      id: '1',
-      name: 'src',
-      type: 'folder',
+      id: "1",
+      name: "src",
+      type: "folder",
       isOpen: true,
       children: [
-        { id: '2', name: 'index.js', type: 'file' },
-        { id: '3', name: 'utils.js', type: 'file' },
+        { id: "2", name: "index.js", type: "file" },
+        { id: "3", name: "utils.js", type: "file" },
       ],
     },
-    { id: '4', name: 'package.json', type: 'file' },
-    { id: '5', name: '.gitignore', type: 'file' },
+    { id: "4", name: "package.json", type: "file" },
+    { id: "5", name: ".gitignore", type: "file" },
   ],
   onSelectFile,
   onCreateFile,
   onDeleteFile,
 }: FileExplorerProps) {
   const [expandedFolders, setExpandedFolders] = useState<Set<string>>(
-    new Set(files.filter((f) => f.isOpen).map((f) => f.id))
+    new Set(files.filter((f) => f.isOpen).map((f) => f.id)),
   );
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
 
@@ -65,12 +72,12 @@ export default function FileExplorer({
         <div
           className={`flex items-center gap-1 px-2 py-1 text-sm transition-colors ${
             selectedFile === item.id
-              ? 'bg-blue-600 text-white'
-              : 'text-slate-300 hover:bg-slate-700'
+              ? "bg-blue-600 text-white"
+              : "text-slate-300 hover:bg-slate-700"
           }`}
           style={{ paddingLeft: `${depth * 16 + 8}px` }}
         >
-          {item.type === 'folder' ? (
+          {item.type === "folder" ? (
             <>
               <button
                 onClick={() => toggleFolder(item.id)}
@@ -105,7 +112,7 @@ export default function FileExplorer({
           </button>
         </div>
 
-        {item.type === 'folder' &&
+        {item.type === "folder" &&
           expandedFolders.has(item.id) &&
           item.children &&
           renderFileTree(item.children, depth + 1)}
@@ -118,9 +125,12 @@ export default function FileExplorer({
       {/* Header */}
       <div className="border-b border-slate-700 p-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-white">Files</h3>
+          <div>
+            <h3 className="text-sm font-semibold text-white">Files</h3>
+            <p className="text-[11px] text-slate-500">Project {projectId}</p>
+          </div>
           <button
-            onClick={() => onCreateFile?.('new-file.js')}
+            onClick={() => onCreateFile?.("new-file.js")}
             className="p-1 hover:bg-slate-700 rounded transition-colors"
             title="Create new file"
           >
