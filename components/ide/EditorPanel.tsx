@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Code, Eye, Terminal, Settings } from 'lucide-react';
-import MonacoEditorComponent from '@/components/editors/MonacoEditor';
-import CodeMirrorEditorComponent from '@/components/editors/CodeMirrorEditor';
-import AceEditorComponent from '@/components/editors/AceEditor';
-import { useEditorStore } from '@/store/editorStore';
+import { useState } from "react";
+import { Code, Eye, Terminal } from "lucide-react";
+import MonacoEditorComponent from "@/components/editors/MonacoEditor";
+import CodeMirrorEditorComponent from "@/components/editors/CodeMirrorEditor";
+import AceEditorComponent from "@/components/editors/AceEditor";
+import { useEditorStore } from "@/store/editorStore";
 
 interface EditorPanelProps {
   projectId: string;
@@ -26,22 +26,22 @@ export default function EditorPanel({ projectId, onRun }: EditorPanelProps) {
     setEditorType,
   } = useEditorStore();
 
-  const [activeTab, setActiveTab] = useState('code');
-  const [output, setOutput] = useState('');
+  const [activeTab, setActiveTab] = useState("code");
+  const output = `$ Ready to execute project ${projectId}...`;
 
   const renderEditor = () => {
     switch (editorType) {
-      case 'monaco':
+      case "monaco":
         return (
           <MonacoEditorComponent
             code={code}
             language={language}
-            theme={theme === 'dark' ? 'vs-dark' : 'vs'}
+            theme={theme === "dark" ? "vs-dark" : "vs"}
             fontSize={fontSize}
             onChange={setCode}
           />
         );
-      case 'codemirror':
+      case "codemirror":
         return (
           <CodeMirrorEditorComponent
             code={code}
@@ -51,7 +51,7 @@ export default function EditorPanel({ projectId, onRun }: EditorPanelProps) {
             onChange={setCode}
           />
         );
-      case 'ace':
+      case "ace":
         return (
           <AceEditorComponent
             code={code}
@@ -71,33 +71,34 @@ export default function EditorPanel({ projectId, onRun }: EditorPanelProps) {
       {/* Editor Tabs */}
       <div className="flex border-b border-slate-700 bg-slate-800/50">
         <button
-          onClick={() => setActiveTab('code')}
+          onClick={() => setActiveTab("code")}
           className={`flex items-center gap-2 border-b-2 px-4 py-2 text-sm font-medium transition-colors ${
-            activeTab === 'code'
-              ? 'border-blue-500 text-blue-400'
-              : 'border-transparent text-slate-400 hover:text-slate-300'
+            activeTab === "code"
+              ? "border-blue-500 text-blue-400"
+              : "border-transparent text-slate-400 hover:text-slate-300"
           }`}
         >
           <Code size={16} />
           Code
         </button>
         <button
-          onClick={() => setActiveTab('preview')}
+          onClick={() => setActiveTab("preview")}
           className={`flex items-center gap-2 border-b-2 px-4 py-2 text-sm font-medium transition-colors ${
-            activeTab === 'preview'
-              ? 'border-blue-500 text-blue-400'
-              : 'border-transparent text-slate-400 hover:text-slate-300'
+            activeTab === "preview"
+              ? "border-blue-500 text-blue-400"
+              : "border-transparent text-slate-400 hover:text-slate-300"
           }`}
         >
           <Eye size={16} />
           Preview
         </button>
         <button
-          onClick={() => setActiveTab('terminal')}
+          onDoubleClick={onRun}
+          onClick={() => setActiveTab("terminal")}
           className={`flex items-center gap-2 border-b-2 px-4 py-2 text-sm font-medium transition-colors ${
-            activeTab === 'terminal'
-              ? 'border-blue-500 text-blue-400'
-              : 'border-transparent text-slate-400 hover:text-slate-300'
+            activeTab === "terminal"
+              ? "border-blue-500 text-blue-400"
+              : "border-transparent text-slate-400 hover:text-slate-300"
           }`}
         >
           <Terminal size={16} />
@@ -108,7 +109,9 @@ export default function EditorPanel({ projectId, onRun }: EditorPanelProps) {
         <div className="ml-auto flex items-center gap-2 px-4 py-2">
           <select
             value={editorType}
-            onChange={(e) => setEditorType(e.target.value as any)}
+            onChange={(e) =>
+              setEditorType(e.target.value as "monaco" | "codemirror" | "ace")
+            }
             className="rounded bg-slate-700 px-2 py-1 text-xs text-slate-300 hover:bg-slate-600"
           >
             <option value="monaco">Monaco</option>
@@ -138,29 +141,31 @@ export default function EditorPanel({ projectId, onRun }: EditorPanelProps) {
           </select>
 
           <button
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
             className="rounded bg-slate-700 px-2 py-1 text-xs text-slate-300 hover:bg-slate-600"
           >
-            {theme === 'dark' ? '☀️' : '🌙'}
+            {theme === "dark" ? "☀️" : "🌙"}
           </button>
         </div>
       </div>
 
       {/* Editor Content */}
       <div className="flex-1 overflow-hidden">
-        {activeTab === 'code' && <div className="h-full">{renderEditor()}</div>}
+        {activeTab === "code" && <div className="h-full">{renderEditor()}</div>}
 
-        {activeTab === 'preview' && (
+        {activeTab === "preview" && (
           <div className="h-full bg-white p-4">
             <div className="rounded border border-slate-300 p-4">
-              <p className="text-slate-600">Preview output will appear here...</p>
+              <p className="text-slate-600">
+                Preview output for project {projectId} will appear here...
+              </p>
             </div>
           </div>
         )}
 
-        {activeTab === 'terminal' && (
+        {activeTab === "terminal" && (
           <div className="h-full bg-slate-950 p-4 font-mono text-sm text-green-400 overflow-y-auto">
-            <div>{output || '$ Ready to execute...'}</div>
+            <div>{output || "$ Ready to execute..."}</div>
           </div>
         )}
       </div>

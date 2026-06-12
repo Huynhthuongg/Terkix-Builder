@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "description": "External Terkix/RKIX repositories requested for local import into Terkix Builder.",
+  "defaultDirectory": "external",
+  "repositories": [
+    {
+      "id": "terkix-rkix-storage",
+      "name": "Terkix RKix Storage",
+      "url": "https://github.com/Huynhthuongg/Terkix-RKix-Storage.git",
+      "localPath": "external/Terkix-RKix-Storage",
+      "purpose": "Storage layer and RKix storage assets for Terkix Builder."
+    },
+    {
+      "id": "terkix-mcp",
+      "name": "TerKix MCP",
+      "url": "https://github.com/Huynhthuongg/TerKix-MCP.git",
+      "localPath": "external/TerKix-MCP",
+      "purpose": "Model Context Protocol tooling and server integrations."
+    },
+    {
+      "id": "terkix",
+      "name": "Terkix",
+      "url": "https://github.com/Huynhthuongg/Terkix.git",
+      "localPath": "external/Terkix",
+      "purpose": "Core Terkix application source for reference and integration."
+    },
+    {
+      "id": "agents-rkix3",
+      "name": "AGENTS RKIX3",
+      "url": "https://github.com/Huynhthuongg/AGENTS.RKIX3.git",
+      "localPath": "external/AGENTS.RKIX3",
+      "purpose": "Agent instructions, workflows, and RKIX3 operating context."
+    },
+    {
+      "id": "rkix3",
+      "name": "RKIX3",
+      "url": "https://github.com/RKIX3/RKIX3.git",
+      "localPath": "external/RKIX3",
+      "purpose": "RKIX3 upstream repository for platform-level reference."
+    }
+  ]
+}

@@ -1,7 +1,7 @@
-import { Request, Response } from 'express';
-import jsExecutor from '../services/jsExecutor';
-import pythonExecutor from '../services/pythonExecutor';
-import dockerExecutor from '../services/dockerExecutor';
+import { Request, Response } from "express";
+import jsExecutor from "../services/jsExecutor";
+import pythonExecutor from "../services/pythonExecutor";
+import dockerExecutor from "../services/dockerExecutor";
 
 export const executeCode = async (req: Request, res: Response) => {
   try {
@@ -10,7 +10,7 @@ export const executeCode = async (req: Request, res: Response) => {
     if (!code || !language) {
       return res.status(400).json({
         success: false,
-        error: 'Missing required fields: code, language',
+        error: "Missing required fields: code, language",
       });
     }
 
@@ -18,9 +18,9 @@ export const executeCode = async (req: Request, res: Response) => {
 
     if (useDocker) {
       // Use Docker for sandboxed execution
-      if (language === 'javascript' || language === 'typescript') {
+      if (language === "javascript" || language === "typescript") {
         result = await dockerExecutor.executeJavaScript(code);
-      } else if (language === 'python') {
+      } else if (language === "python") {
         result = await dockerExecutor.executePython(code);
       } else {
         return res.status(400).json({
@@ -30,9 +30,9 @@ export const executeCode = async (req: Request, res: Response) => {
       }
     } else {
       // Use local execution
-      if (language === 'javascript' || language === 'typescript') {
+      if (language === "javascript" || language === "typescript") {
         result = await jsExecutor.executeSafe(code);
-      } else if (language === 'python') {
+      } else if (language === "python") {
         result = await pythonExecutor.execute(code);
       } else {
         return res.status(400).json({
@@ -59,12 +59,12 @@ export const executeCode = async (req: Request, res: Response) => {
 
 export const buildProject = async (req: Request, res: Response) => {
   try {
-    const { projectId, language, files } = req.body;
+    const { projectId, language } = req.body;
 
     if (!projectId || !language) {
       return res.status(400).json({
         success: false,
-        error: 'Missing required fields: projectId, language',
+        error: "Missing required fields: projectId, language",
       });
     }
 
@@ -72,8 +72,8 @@ export const buildProject = async (req: Request, res: Response) => {
     res.json({
       success: true,
       buildId: Date.now().toString(),
-      status: 'completed',
-      output: 'Build completed successfully',
+      status: "completed",
+      output: "Build completed successfully",
     });
   } catch (error: any) {
     res.status(500).json({

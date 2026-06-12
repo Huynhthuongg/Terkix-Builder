@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
-import { X, Maximize2, Minimize2 } from 'lucide-react';
+import { useEffect, useRef, useState } from "react";
+import { X, Maximize2, Minimize2 } from "lucide-react";
 
 interface TerminalProps {
   projectId: string;
@@ -14,13 +14,13 @@ export default function Terminal({
   projectId,
   isOpen = true,
   onClose,
-  height = '200px',
+  height = "200px",
 }: TerminalProps) {
   const terminalRef = useRef<HTMLDivElement>(null);
-  const [output, setOutput] = useState<string[]>([
-    '$ Welcome to Terkix Builder Terminal',
-    '$ Ready to execute commands...',
-  ]);
+  const output = [
+    "$ Welcome to Terkix Builder Terminal",
+    `$ Attached to project ${projectId}`,
+  ];
   const [isMaximized, setIsMaximized] = useState(false);
 
   useEffect(() => {
@@ -29,16 +29,12 @@ export default function Terminal({
     }
   }, [output]);
 
-  const addOutput = (text: string) => {
-    setOutput((prev) => [...prev, text]);
-  };
-
   if (!isOpen) return null;
 
   return (
     <div
       className={`flex flex-col border-t border-slate-700 bg-slate-950 ${
-        isMaximized ? 'fixed inset-0 z-50' : ''
+        isMaximized ? "fixed inset-0 z-50" : ""
       }`}
       style={!isMaximized ? { height } : {}}
     >

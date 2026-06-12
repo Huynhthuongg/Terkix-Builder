@@ -5,18 +5,21 @@ A comprehensive IDE web platform with code editor, runtime environment, and buil
 ## Features
 
 ### 🎨 Frontend
+
 - **Multiple Code Editors**: Monaco Editor (VS Code), CodeMirror, Ace
 - **Responsive UI**: Modern IDE interface with file explorer, editor, terminal, and preview
 - **Real-time Collaboration**: WebSocket support for live updates
 - **Dark/Light Theme**: Customizable theme support
 
 ### ⚙️ Backend
+
 - **Express Server**: RESTful API for project management
 - **Next.js API Routes**: Serverless functions for code execution
 - **WebSocket Support**: Real-time communication
 - **Authentication**: Secure user authentication
 
 ### 🚀 Runtime & Build
+
 - **JavaScript/TypeScript Support**: Full ES6+ support
 - **Python Support**: Python 3.x execution
 - **Docker Sandboxing**: Secure code execution in isolated containers
@@ -24,12 +27,14 @@ A comprehensive IDE web platform with code editor, runtime environment, and buil
 - **Build System**: Webpack/Vite integration for optimized builds
 
 ### 💾 Storage & Management
+
 - **File Management**: Create, edit, delete files and folders
 - **Project Storage**: Save and load projects
 - **Version Control**: Git integration (optional)
 - **Export/Import**: Download and upload projects
 
 ### 🔐 Security
+
 - **Sandboxed Execution**: Isolated code execution environment
 - **User Authentication**: Secure login and session management
 - **Rate Limiting**: API rate limiting to prevent abuse
@@ -115,6 +120,7 @@ Terkix-Builder/
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js 18+
 - Docker (for sandboxed execution)
 - Git
@@ -141,6 +147,7 @@ The application will be available at `http://localhost:3000`
 ## Technology Stack
 
 ### Frontend
+
 - **React 19**: UI library
 - **Next.js 14**: React framework with API routes
 - **TypeScript**: Type-safe JavaScript
@@ -149,17 +156,20 @@ The application will be available at `http://localhost:3000`
 - **Zustand**: State management
 
 ### Code Editors
+
 - **Monaco Editor**: VS Code-like editor
 - **CodeMirror 6**: Lightweight editor
 - **Ace Editor**: Lightweight editor
 
 ### Backend
+
 - **Express.js**: Web framework
 - **Socket.io**: Real-time communication
 - **Docker**: Container runtime
 - **WebContainers**: Browser-based runtime
 
 ### Build & Compilation
+
 - **Webpack**: Module bundler
 - **Vite**: Build tool
 - **Babel**: JavaScript compiler
@@ -168,6 +178,7 @@ The application will be available at `http://localhost:3000`
 ## API Documentation
 
 ### Projects API
+
 - `GET /api/projects` - List all projects
 - `POST /api/projects` - Create new project
 - `GET /api/projects/:id` - Get project details
@@ -175,16 +186,19 @@ The application will be available at `http://localhost:3000`
 - `DELETE /api/projects/:id` - Delete project
 
 ### Files API
+
 - `GET /api/files/:projectId` - List project files
 - `POST /api/files/:projectId` - Create file
 - `PUT /api/files/:projectId/:fileId` - Update file
 - `DELETE /api/files/:projectId/:fileId` - Delete file
 
 ### Execute API
+
 - `POST /api/execute` - Execute code
 - `POST /api/execute/build` - Build project
 
 ### Build API
+
 - `POST /api/build/javascript` - Build JavaScript
 - `POST /api/build/python` - Build Python
 
@@ -217,16 +231,19 @@ RATE_LIMIT_MAX_REQUESTS=100
 ## Development
 
 ### Running Tests
+
 ```bash
 npm run test
 ```
 
 ### Linting
+
 ```bash
 npm run lint
 ```
 
 ### Formatting
+
 ```bash
 npm run format
 ```
@@ -234,12 +251,14 @@ npm run format
 ## Deployment
 
 ### Docker Deployment
+
 ```bash
 docker build -t terkix-builder .
 docker run -p 3000:3000 terkix-builder
 ```
 
 ### Vercel Deployment
+
 ```bash
 vercel deploy
 ```
@@ -280,3 +299,13 @@ For support, email support@terkix.com or open an issue on GitHub.
 - Inspired by Replit
 - Built with React, Next.js, and Express
 - Uses Monaco Editor, CodeMirror, and Ace Editor
+
+## External Terkix/RKIX Repository Imports
+
+Related Terkix/RKIX repositories are tracked in `integrations/terkix-repositories.json` and can be cloned locally into the ignored `external/` workspace:
+
+```bash
+npm run import:terkix-repos
+```
+
+Use `npm run import:terkix-repos -- --dry-run` to preview clone/update commands. See `docs/terkix-repository-imports.md` for the full repository list and workflow.

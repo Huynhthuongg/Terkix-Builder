@@ -1,14 +1,18 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Navbar from '@/components/ide/Navbar';
-import FileExplorer from '@/components/ide/FileExplorer';
-import EditorPanel from '@/components/ide/EditorPanel';
-import Terminal from '@/components/ide/Terminal';
-import { useExecutor } from '@/hooks/useExecutor';
-import { useEditorStore } from '@/store/editorStore';
+import { useState } from "react";
+import Navbar from "@/components/ide/Navbar";
+import FileExplorer from "@/components/ide/FileExplorer";
+import EditorPanel from "@/components/ide/EditorPanel";
+import Terminal from "@/components/ide/Terminal";
+import { useExecutor } from "@/hooks/useExecutor";
+import { useEditorStore } from "@/store/editorStore";
 
-export default function EditorPage({ params }: { params: { projectId: string } }) {
+interface EditorWorkspaceProps {
+  projectId: string;
+}
+
+export default function EditorWorkspace({ projectId }: EditorWorkspaceProps) {
   const { code, language } = useEditorStore();
   const { execute, isExecuting } = useExecutor();
   const [isSaving, setIsSaving] = useState(false);
@@ -17,7 +21,6 @@ export default function EditorPage({ params }: { params: { projectId: string } }
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      // TODO: Implement save to backend
       await new Promise((resolve) => setTimeout(resolve, 500));
     } finally {
       setIsSaving(false);
@@ -25,20 +28,18 @@ export default function EditorPage({ params }: { params: { projectId: string } }
   };
 
   const handleRun = async () => {
-    await execute(code, language, params.projectId);
+    await execute(code, language, projectId);
   };
 
   const handleShare = () => {
-    // TODO: Implement share functionality
-    alert('Share functionality coming soon!');
+    window.alert("Share functionality coming soon!");
   };
 
   return (
     <div className="flex h-screen flex-col bg-slate-900">
-      {/* Navbar */}
       <Navbar
         projectName="My Project"
-        projectId={params.projectId}
+        projectId={projectId}
         onSave={handleSave}
         onRun={handleRun}
         onShare={handleShare}
@@ -46,20 +47,15 @@ export default function EditorPage({ params }: { params: { projectId: string } }
         isRunning={isExecuting}
       />
 
-      {/* Main Editor Area */}
       <div className="flex flex-1 overflow-hidden">
-        {/* File Explorer */}
-        <FileExplorer projectId={params.projectId} />
+        <FileExplorer projectId={projectId} />
 
-        {/* Editor and Terminal */}
         <div className="flex flex-1 flex-col">
-          {/* Editor Panel */}
-          <EditorPanel projectId={params.projectId} onRun={handleRun} />
+          <EditorPanel projectId={projectId} onRun={handleRun} />
 
-          {/* Terminal */}
           {showTerminal && (
             <Terminal
-              projectId={params.projectId}
+              projectId={projectId}
               isOpen={showTerminal}
               onClose={() => setShowTerminal(false)}
               height="250px"
