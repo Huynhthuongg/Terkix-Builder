@@ -3,9 +3,9 @@ import { Analytics } from "@vercel/analytics/next";
 import "../styles/globals.css";
 
 export const metadata: Metadata = {
-  title: "Terkix Builder - IDE Web Platform",
+  title: "Terkix AI Launch - RKIX3 Command Center",
   description:
-    "A comprehensive IDE web platform for building, coding, and deploying applications",
+    "A unified launch dashboard for the Terkix and RKIX3 AI repositories, ready for public .dev or .com deployment",
 };
 
 export default function RootLayout({
