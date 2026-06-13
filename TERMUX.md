@@ -1,5 +1,43 @@
 # Chạy Terkix-Builder trên Termux
 
+## 0. Nếu không thấy file mới hoặc script mới
+
+Nếu Termux báo các lỗi như sau:
+
+```text
+No files matching the pattern were found: "scripts/check-local-deps.mjs"
+No files matching the pattern were found: "TERMUX.md"
+npm error Missing script: "check:deps"
+```
+
+nghĩa là thư mục `~/Terkix-Builder` trên điện thoại của bạn **chưa kéo commit mới nhất**. Code trên Git đã có các file/script đó, nhưng máy bạn vẫn đang ở bản cũ.
+
+Chạy trong thư mục dự án:
+
+```bash
+git status
+git pull
+npm install
+```
+
+Sau đó kiểm tra lại:
+
+```bash
+npm run check:deps
+npm run typecheck
+npm run build
+```
+
+Nếu `git pull` báo conflict, lưu file bạn cần rồi clone lại bản sạch:
+
+```bash
+cd ~
+mv Terkix-Builder Terkix-Builder-old
+git clone https://github.com/Huynhthuongg/Terkix-Builder.git
+cd Terkix-Builder
+npm install
+```
+
 Bạn bị lỗi:
 
 ```text

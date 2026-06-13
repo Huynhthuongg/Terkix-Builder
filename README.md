@@ -119,6 +119,16 @@ Terkix-Builder/
 
 ## Termux quick fix
 
+If Termux says `scripts/check-local-deps.mjs` or `TERMUX.md` does not exist, or `npm run check:deps` is missing, your local checkout is still old. Pull the latest commit first:
+
+```bash
+git status
+git pull
+npm install
+```
+
+Then run `npm run check:deps`, `npm run typecheck`, and `npm run build`.
+
 If `npm run typecheck` prints `tsc: not found` or `npm run build` prints `next: not found`, install dependencies first:
 
 ```bash

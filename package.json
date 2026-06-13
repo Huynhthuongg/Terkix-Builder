@@ -18,7 +18,9 @@
     "predev:next": "npm run check:deps",
     "prebuild": "npm run check:deps",
     "pretypecheck": "npm run check:deps",
-    "prelint": "npm run check:deps"
+    "prelint": "npm run check:deps",
+    "doctor": "npm run check:deps",
+    "termux:doctor": "npm run check:deps"
   },
   "dependencies": {
     "@codemirror/lang-javascript": "^6.0.0",
