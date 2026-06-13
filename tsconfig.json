@@ -2,11 +2,7 @@
   "compilerOptions": {
     "target": "ES2020",
     "useDefineForClassFields": true,
-    "lib": [
-      "ES2020",
-      "DOM",
-      "DOM.Iterable"
-    ],
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -26,30 +22,14 @@
     /* Path mapping */
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./app/*"
-      ],
-      "@/components/*": [
-        "./components/*"
-      ],
-      "@/lib/*": [
-        "./lib/*"
-      ],
-      "@/hooks/*": [
-        "./hooks/*"
-      ],
-      "@/store/*": [
-        "./store/*"
-      ],
-      "@/types/*": [
-        "./types/*"
-      ],
-      "@/styles/*": [
-        "./styles/*"
-      ],
-      "@/server/*": [
-        "./server/*"
-      ]
+      "@/*": ["./app/*"],
+      "@/components/*": ["./components/*"],
+      "@/lib/*": ["./lib/*"],
+      "@/hooks/*": ["./hooks/*"],
+      "@/store/*": ["./store/*"],
+      "@/types/*": ["./types/*"],
+      "@/styles/*": ["./styles/*"],
+      "@/server/*": ["./server/*"]
     },
     "allowJs": true,
     "incremental": true,
@@ -70,12 +50,5 @@
     "server",
     ".next/types/**/*.ts"
   ],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    }
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
