@@ -12,7 +12,8 @@
     "start": "next start",
     "lint": "tsc --noEmit",
     "format": "prettier --write .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "import:repos": "node scripts/import-repositories.mjs"
   },
   "dependencies": {
     "@codemirror/lang-javascript": "^6.0.0",
