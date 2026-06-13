@@ -54,3 +54,7 @@ temp/
 
 # TypeScript
 *.tsbuildinfo
+
+# Imported external repositories restored by npm run import:repos
+/imports/repositories/*
+!/imports/repositories/.gitkeep
