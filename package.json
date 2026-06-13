@@ -13,7 +13,12 @@
     "lint": "tsc --noEmit",
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit",
-    "import:repos": "node scripts/import-repositories.mjs"
+    "import:repos": "node scripts/import-repositories.mjs",
+    "check:deps": "node scripts/check-local-deps.mjs",
+    "predev:next": "npm run check:deps",
+    "prebuild": "npm run check:deps",
+    "pretypecheck": "npm run check:deps",
+    "prelint": "npm run check:deps"
   },
   "dependencies": {
     "@codemirror/lang-javascript": "^6.0.0",
